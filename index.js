@@ -167,4 +167,6 @@ const styles = StyleSheet.create({
   },
 });
 
-module.exports = SafePickerIOS;
+// module.exports = SafePickerIOS;
+
+export default SafePickerIOS;
