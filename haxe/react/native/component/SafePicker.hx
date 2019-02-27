@@ -18,10 +18,10 @@ class SafePicker extends ReactComponentOf<PickerProps,SafePickerState> {
     function new(p){
         super(p);
         this.state = {scrolling:false};
-#if debug
-        trace('init SafePicker in async mode');
-#else
+#if safePickerSync
         trace('init SafePicker in sync mode');
+#else
+        trace('init SafePicker in async mode');
 #end
     }
     var _r:RNSafePicker;
@@ -29,16 +29,19 @@ class SafePicker extends ReactComponentOf<PickerProps,SafePickerState> {
         if(r==null) return;
         _r=r;
     }
-#if debug
+#if safePickerSync
+    override function shouldComponentUpdate(np:PickerProps,ns:SafePickerState):Bool{
+        var ret:Array<Bool> = _r.isScrollingSynchronous();
+        trace('shouldComponentUpdate ret=',ret);
+        if (ret!=null) return !ret[0];
+        else return true;
+    }
+#else
     override function componentWillReceiveProps(np:PickerProps){
         _r.isScrolling().then(function(v:Array<Bool>){ setState({scrolling:v[0]}); });
     }
     override function shouldComponentUpdate(np:PickerProps,ns:SafePickerState):Bool{
         return !ns.scrolling;
-    }
-#else
-    override function shouldComponentUpdate(np:PickerProps,ns:SafePickerState):Bool{
-        return !_r.isScrolling()[0];
     }
 #end
     override function render(){

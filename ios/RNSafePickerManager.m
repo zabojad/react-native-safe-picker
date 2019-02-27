@@ -58,11 +58,15 @@ RCT_EXPORT_METHOD(isScrolling: (nonnull NSNumber *)reactTag resolver: (RCTPromis
     });
 }
 RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(isScrollingSynchronous:(nonnull NSNumber *)reactTag) {
-    RNSafePicker *view = (RNSafePicker *)[self.bridge.uiManager viewForReactTag: reactTag];
-    if (!view) {
-        return @[[NSNumber numberWithBool:NO]];
-    }
-    BOOL ret = [self anySubViewScrolling:view];
+    __block BOOL ret = NO;
+    dispatch_sync(dispatch_get_main_queue(), ^{
+        RNSafePicker *view = (RNSafePicker *)[self.bridge.uiManager viewForReactTag: reactTag];
+        if (view) {
+            //return @[[NSNumber numberWithBool:NO]];
+            ret = [self anySubViewScrolling:view];
+        }
+        
+    });
     return @[[NSNumber numberWithBool:ret]];
 }
 -(bool) anySubViewScrolling:(UIView*)view {
