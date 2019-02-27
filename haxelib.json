@@ -1,0 +1,12 @@
+{
+    "name": "react-native-safe-picker",
+    "url" : "https://github.com/zabojad/react-native-safe-picker",
+    "license": "MIT",
+    "classPath": "./haxe",
+    "tags": ["react-native", "ios", "picker"],
+    "description": "An extern for the Magimix Cook Expert React native module",
+    "version": "1.0.0",
+    "releasenote": "",
+    "contributors": ["zabojad"],
+    "dependencies": {}
+}
